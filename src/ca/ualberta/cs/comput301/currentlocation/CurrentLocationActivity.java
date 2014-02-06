@@ -1,11 +1,11 @@
 package ca.ualberta.cs.comput301.currentlocation;
 
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Activity;
-import android.content.Context;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -16,9 +16,9 @@ public class CurrentLocationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		// TODO
 		// Obtain LocationManager service and set up location update request.
-		
+		LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
 	}
 
 	
@@ -26,7 +26,15 @@ public class CurrentLocationActivity extends Activity {
 	private final LocationListener locationListener = new LocationListener(){
 	// TODO: override the four methods.
 		public void onLocationChanged (Location location) {
-			//TODO
+			TextView tv = (TextView) findViewById(R.id.myLocationText);
+			if(location != null) {
+				double lat = location.getLatitude();
+				double lng = location.getLongitude();
+				tv.setText("Latitude: " + lat
+						+ "\nLongitude: " + lng);
+			} else {
+				tv.setText("NO LOCATION INFO");
+			}
 		}
 		
 		public void onProviderDisabled (String provider) {
